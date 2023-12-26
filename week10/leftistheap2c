@@ -1,0 +1,65 @@
+#include <stdio.h>
+#include <stdlib.h>
+struct MaxLeftistHeapNode {
+    int value;
+    int npl;
+    struct MaxLeftistHeapNode* left;
+    struct MaxLeftistHeapNode* right;
+};
+struct MaxLeftistHeapNode* merge(struct MaxLeftistHeapNode* h1,struct MaxLeftistHeapNode* h2) {
+    if (h1 == NULL) {
+        return h2;
+    }
+    if (h2 == NULL) {
+        return h1;
+    }
+    if (h1->value<h2->value) {
+        struct MaxLeftistHeapNode* temp = h1;
+        h1 = h2;
+        h2 = temp;
+    }
+    h1->right = merge(h1->right, h2);
+    if ((h1->left == NULL) || ((h1->right != NULL) && (h1->left->npl < h1->right->npl)) ) {
+        struct MaxLeftistHeapNode* temp = h1->left;
+        h1->left = h1->right;
+        h1->right = temp;
+    }
+    if (h1->right == NULL) {
+        h1->npl = 0;
+    } else {
+        h1->npl = h1->right->npl + 1;
+    }
+    return h1;
+}
+struct MaxLeftistHeapNode* insert(struct MaxLeftistHeapNode* root, int value) {
+    struct MaxLeftistHeapNode* newnode = (struct MaxLeftistHeapNode*)malloc(sizeof(struct MaxLeftistHeapNode));
+    newnode->value = value;
+    newnode->npl = 0;
+    newnode->left = NULL;
+    newnode->right = NULL;
+    root = merge(root, newnode);
+    return root;
+}
+void display(struct MaxLeftistHeapNode *root){
+    if(root!=0){
+        printf("%d->",root->value);
+        display(root->left);
+        display(root->right);
+    }
+}
+int main() {
+    struct MaxLeftistHeapNode* root = NULL;
+    int arr[50];
+    int n;
+    printf("enter no of elements");
+    scanf("%d",&n);
+    for(int i=0;i<n;i++){
+        printf("enter elements with space-");
+        scanf("%d",&arr[i]);
+    }
+    for (int i = 0; i <n; i++) {
+        root = insert(root, arr[i]);
+    }
+    printf("max element is %d",root->value);
+    return 0;
+}

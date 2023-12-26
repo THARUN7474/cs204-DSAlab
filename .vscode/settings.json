@@ -1,0 +1,8 @@
+{
+    "C_Cpp.errorSquiggles": "disabled",
+    "files.associations": {
+        "arrayADT.C": "cpp",
+        "stdio.h": "c"
+    },
+    "workbench.panel.defaultLocation": "right"
+}
